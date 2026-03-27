@@ -2,7 +2,7 @@ const fs = require('fs/promises');
 
 const FACILITY_ID = "43e81fe2-44b4-4806-8aae-b3b843755bd8"
 let allCourses = [];
-const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiI4MjM0NmUyZS0wMjJhLTQzYjUtOTIwNS1mODgwODAyM2NmNDAiLCJpc3MiOiJodHRwczovL2NvZGVuaW5qYXN1c2IyYy5iMmNsb2dpbi5jb20vNTYzM2Y2OTgtZGYzNC00MWY1LWE2MjUtM2RhZmQ5ZjgwZTNmL3YyLjAvIiwiZXhwIjoxNzcyNTg0MjcxLCJuYmYiOjE3NzI1ODA2NzEsIm9pZCI6IjdlOTMwZWM4LTE4NWMtNDE4MC05Yzk5LWQ2OWVjYWQ3ZTQxNiIsInN1YiI6IjdlOTMwZWM4LTE4NWMtNDE4MC05Yzk5LWQ2OWVjYWQ3ZTQxNiIsIm5hbWUiOiJTZW5zZWkgU2Vuc2VpIiwiZ2l2ZW5fbmFtZSI6IlNlbnNlaSIsImZhbWlseV9uYW1lIjoiU2Vuc2VpIiwiZXh0ZW5zaW9uX1VzZXJSb2xlIjoiU3RhZmYiLCJ0ZnAiOiJCMkNfMV9TaWduSW4iLCJub25jZSI6IjhlZmE3YWJiLWMxOWYtNDMwMC1hYWVjLTVkMjk2YzFlMTBhOSIsInNjcCI6IkFwaS5BY2Nlc3MuRnVsbCIsImF6cCI6IjQ2ZThjZWM4LWEyNWItNGI1MC05MDUzLTQ2OWU5MDZhMzY0ZSIsInZlciI6IjEuMCIsImlhdCI6MTc3MjU4MDY3MX0.oIHLJ6DZ8ae7mev_CvF4hRYf_JKwx7CPazgj6CzIWgRn0VvKXgN6GSjVLyTtSs4oFf24_yZh9lKglCnVP_VdS1Kd0keM6ryzYDAcXVW7JXfm4xHsmyZv9Al4HcGAG9huloJdDxhOR6WxkulkFlIUvfaVZYuEiyL9xUoWMNSlt0WmvmrPNeGV16t2J7B5Tbo0Djv_PbtpI2uVHEEcUGGt8B3kHJ4-Oifw65aiIn6MLCFK6G_PX4-Zc-cGJyfcWkegd5mn7SgcczcQOfSWXnM1bl4SGuhuU9wYSVBOzwiBo3tD_t5URoglwYFqX3vs0AykouNgs5iRzawtpJvufiG6tQ";
+const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiI4MjM0NmUyZS0wMjJhLTQzYjUtOTIwNS1mODgwODAyM2NmNDAiLCJpc3MiOiJodHRwczovL2NvZGVuaW5qYXN1c2IyYy5iMmNsb2dpbi5jb20vNTYzM2Y2OTgtZGYzNC00MWY1LWE2MjUtM2RhZmQ5ZjgwZTNmL3YyLjAvIiwiZXhwIjoxNzc0NjU2MTQwLCJuYmYiOjE3NzQ2NTI1NDAsIm9pZCI6IjdlOTMwZWM4LTE4NWMtNDE4MC05Yzk5LWQ2OWVjYWQ3ZTQxNiIsInN1YiI6IjdlOTMwZWM4LTE4NWMtNDE4MC05Yzk5LWQ2OWVjYWQ3ZTQxNiIsIm5hbWUiOiJTZW5zZWkgU2Vuc2VpIiwiZ2l2ZW5fbmFtZSI6IlNlbnNlaSIsImZhbWlseV9uYW1lIjoiU2Vuc2VpIiwiZXh0ZW5zaW9uX1VzZXJSb2xlIjoiU3RhZmYiLCJ0ZnAiOiJCMkNfMV9TaWduSW4iLCJub25jZSI6ImZmMDgzM2ViLTJhYWItNGNhYi1iNzQyLTNiYTBiNzIxZWQzZiIsInNjcCI6IkFwaS5BY2Nlc3MuRnVsbCIsImF6cCI6IjQ2ZThjZWM4LWEyNWItNGI1MC05MDUzLTQ2OWU5MDZhMzY0ZSIsInZlciI6IjEuMCIsImlhdCI6MTc3NDY1MjU0MH0.YuNqc11yTphktzF3v2OpMogxdiT_pcspANI6jrCkhaZz6cCVvLf9DPK_20qZqxHMEWdkxkfqKVuS18o-kDZZa5RAx7fM8uQgTnaEDbclB9e3bqvEQvGvIvy5UdGaiM0rcl8RIMq6DaCXjzkPwHF8vKs_5yyh2zZtp9fj9cW5Xjopnvxx0F-RZFtx89EcEOXrBJtzoQdbZnYV6BTvU4JYZSzOjpzopt8GijWz2kWD8RewE9V5_YTlf80nG-k3Atd3wE2PCE-FWyq0y9zHdYHGlTvJfQjLMB1W9TkcOyVkDANsjXJNK8hVHYdwJT-h_fUPtOsAQiXmVC-eT2oxso0Csw";
 
 async function getAllNinjas() {
     let result = await fetch("https://api.impact.codeninjas.com/center/api/common/ninjas?sortBy=None&&displayFilters=All&&isSensei=true", {
@@ -122,7 +122,6 @@ async function getBeltInfo(levelId, userId, currentLevelId){
 
 }
 
-
 async function main() {
 
     let guideFormattedData = await guideFormatted();
@@ -185,9 +184,6 @@ async function main() {
 
 }
 
-//main();
-
-
 async function getNinjasFullData(){
     let guideFormattedData = await guideFormatted();
     let ninjas = await getAllNinjas()
@@ -236,18 +232,16 @@ async function getNinjasFullData(){
                 for (let n = 0; n < beltInfo.projects.length; n++) {
                     const project = beltInfo.projects[n]; // activity
                     const startDate = new Date(project.startDate);
-                    const endDate = new Date(project.completedDate);
+                    let endDate = new Date(project.completedDate);
                     
-                    const diffTime = Math.abs(endDate - startDate);
-                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                
-
-                    const line =`${ninja.firstName} ${ninja.lastName}, ${theCourse.name}, ${project.activityType}, ${project.activityTitle}, ${project.startDate.split('T')[0]}, ${project.completedDate.split('T')[0]}, ${diffDays}`;
+                    let diffTime = Math.abs(endDate - startDate);
+                    let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                    let line =`${ninja.firstName} ${ninja.lastName}, ${theCourse.name}, level-${level.sequence} ${project.activityType}, ${project.activityTitle.replace(new RegExp(',','g'), ' ')}, ${project.startDate.split('T')[0]}, ${project.completedDate.split('T')[0]}, ${diffDays}`;
+                    
                     console.log(line);
-
-                    //fs.appendFileSync('ninja_report.txt', `${line}\n`);
-                    await fs.writeFile('ninja_report2.csv', `${line}\n`, { encoding: 'utf8', flag: 'a' });
-
+                    
+                    await fs.writeFile('ninja_report_all.csv', `${line}\n`, { encoding: 'utf8', flag: 'a' });
+                
                 }
 
             }
@@ -257,4 +251,35 @@ async function getNinjasFullData(){
     }
 }
 
+
+async function getninjasBeltInfo(){
+    let guideFormattedData = await guideFormatted();
+    let ninjas = await getAllNinjas();
+    let ninjaNamesAndCourseIds = ninjas.map(ninja => {
+        let tmp = {
+            firstName: ninja.firstName,
+            lastName: ninja.lastName,
+            theLogout: new Date(ninja.sessionLogoutTime),
+            currentCourseName : getCourseNameById(ninja.currentCouseId)
+        };
+        return tmp;
+    });
+
+    for (let i = 0; i < ninjaNamesAndCourseIds.length; i++) {
+        const ninja = ninjaNamesAndCourseIds[i];
+
+
+        let line = `${ninja.firstName} ${ninja.lastName}, ${ninja.currentCourseName}`;
+
+        console.log(line);
+
+        await fs.writeFile('ninja_current_belts.csv', `${line}\n`, { encoding: 'utf8', flag: 'a' });
+
+
+    }
+
+}
+
+//main();
 getNinjasFullData();
+//getninjasBeltInfo();
