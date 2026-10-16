@@ -1,0 +1,28 @@
+{
+  "name": "pickering_report",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/cnpickering99/pickering_report#readme",
+  "bugs": {
+    "url": "https://github.com/cnpickering99/pickering_report/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cnpickering99/pickering_report.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.5.0",
+    "firebase":"13.0.0"
+  },
+  "allowScripts": {
+    "@firebase/util@1.15.3": true,
+    "protobufjs@7.6.6": true
+  }
+}
